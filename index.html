@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #container {
+            text-align: center;
+        }
+        table {
+            border-collapse: collapse;
+            width: 90%; /* Aumentamos a largura da tabela para caber mais conteúdo */
+            max-width: 800px; /* Largura máxima da tabela */
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+            white-space: nowrap; /* Impede a quebra de texto nas células */
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Ordenação de Arrays</h1>
+        <!-- Input para inserir valores desordenados -->
+        <input type="text" id="inputValores" placeholder="Insira um valor">
+        <button onclick="adicionarValor()">Adicionar e Ordenar</button>
+
+        <table id="naoOrdenada">
+            <caption>Não ordenada</caption>
+            <thead>
+                <tr>
+                    <th>Índice</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os valores não ordenados serão inseridos aqui -->
+            </tbody>
+        </table>
+
+        <table id="ordenada">
+            <caption>Ordenada</caption>
+            <thead>
+                <tr>
+                    <th>Índice</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Os valores ordenados serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Arrays para armazenar os valores
+        var valoresDesordenados = [];
+        var valoresOrdenados = [];
+
+        // Função para adicionar um valor ao array desordenado e ordenar o array ordenado
+        function adicionarValor() {
+            var inputValores = document.getElementById("inputValores");
+            var valor = inputValores.value.trim().toLowerCase(); // Converte para minúsculas
+
+            if (valor !== "") {
+                valoresDesordenados.push(valor);
+                valoresOrdenados.push(valor); // Adiciona ao array ordenado
+                ordenarArray(valoresOrdenados);
+                atualizarTabelas();
+                inputValores.value = "";
+            }
+        }
+
+        // Função para ordenar um array passado por referência sem usar sort()
+        function ordenarArray(array) {
+            for (var i = 0; i < array.length - 1; i++) {
+                for (var j = i + 1; j < array.length; j++) {
+                    if (array[i] > array[j]) {
+                        // Trocar os elementos se estiverem fora de ordem
+                        var temp = array[i];
+                        array[i] = array[j];
+                        array[j] = temp;
+                    }
+                }
+            }
+        }
+
+        // Função para atualizar as tabelas com os valores
+        function atualizarTabelas() {
+            preencherTabela(document.getElementById("naoOrdenada"), valoresDesordenados);
+            preencherTabela(document.getElementById("ordenada"), valoresOrdenados);
+        }
+
+        // Função para preencher uma tabela com os valores de um array
+        function preencherTabela(tabela, array) {
+            var tbody = tabela.querySelector("tbody");
+            tbody.innerHTML = "";
+
+            for (var i = 0; i < array.length; i++) {
+                var row = tbody.insertRow();
+                var cellIndex = row.insertCell(0);
+                var cellValue = row.insertCell(1);
+                cellIndex.innerHTML = i;
+                cellValue.innerHTML = array[i];
+            }
+        }
+    </script>
+</body>
+</html>
